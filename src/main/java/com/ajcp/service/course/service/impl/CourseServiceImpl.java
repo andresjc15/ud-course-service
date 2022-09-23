@@ -1,6 +1,7 @@
 package com.ajcp.service.course.service.impl;
 
 import com.ajcp.service.course.entity.Course;
+import com.ajcp.service.course.entity.Exam;
 import com.ajcp.service.course.entity.Student;
 import com.ajcp.service.course.repository.CourseRepository;
 import com.ajcp.service.course.service.CourseService;
@@ -82,5 +83,26 @@ public class CourseServiceImpl implements CourseService {
     @Transactional(readOnly = true)
     public Course findCourseByStudentId(Long id) {
         return courseRepository.findCourseByStudentById(id);
+    }
+
+    @Override
+    public Optional<Course> addExams(Long courseId, List<Exam> exams) {
+        return courseRepository.findById(courseId)
+                .map(course -> {
+                    exams.stream().forEach(ex -> {
+                        course.addExam(ex);
+                    });
+                    return Optional.of(courseRepository.save(course));
+                })
+                .orElse(Optional.empty());
+    }
+
+    @Override
+    public Optional<Course> removeExam(Long courseId, Exam exam) {
+        return courseRepository.findById(courseId)
+                .map(course -> {
+                    course.removeExam(exam);
+                    return Optional.of(courseRepository.save(course));
+                }).orElse(Optional.empty());
     }
 }

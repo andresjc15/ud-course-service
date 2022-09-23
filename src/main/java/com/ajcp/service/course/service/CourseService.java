@@ -1,6 +1,7 @@
 package com.ajcp.service.course.service;
 
 import com.ajcp.service.course.entity.Course;
+import com.ajcp.service.course.entity.Exam;
 import com.ajcp.service.course.entity.Student;
 
 import java.util.List;
@@ -23,5 +24,9 @@ public interface CourseService {
     public Optional<Course> removeStudent(Long courseId, Student student);
 
     public Course findCourseByStudentId(Long id);
+
+    public Optional<Course> addExams(Long courseId, List<Exam> exams);
+
+    public Optional<Course> removeExam(Long courseId, Exam exam);
 
 }

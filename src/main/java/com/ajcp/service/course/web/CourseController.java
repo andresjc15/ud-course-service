@@ -1,15 +1,20 @@
 package com.ajcp.service.course.web;
 
 import com.ajcp.service.course.entity.Course;
+import com.ajcp.service.course.entity.Exam;
 import com.ajcp.service.course.entity.Student;
 import com.ajcp.service.course.service.CourseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
+import java.util.Objects;
 
 
 @RestController
@@ -31,12 +36,18 @@ public class CourseController {
     }
 
     @PostMapping
-    public ResponseEntity<?> register(@RequestBody Course course) {
+    public ResponseEntity<?> register(@Valid @RequestBody Course course, BindingResult result) {
+        if (result.hasErrors()) {
+            return this.validate(result);
+        }
         return ResponseEntity.status(HttpStatus.CREATED).body(courseService.save(course));
     }
 
     @PutMapping
-    public ResponseEntity<?> update(@RequestBody Course course) {
+    public ResponseEntity<?> update(@Valid @RequestBody Course course, BindingResult result) {
+        if (result.hasErrors()) {
+            return this.validate(result);
+        }
         return courseService.update(course)
                 .map(obj -> ResponseEntity.ok(obj))
                 .orElse(ResponseEntity.notFound().build());
@@ -64,6 +75,29 @@ public class CourseController {
     @GetMapping("/student/{id}")
     public ResponseEntity<?> findStudentById(@PathVariable Long id) {
         return ResponseEntity.ok().body(courseService.findCourseByStudentId(id));
+    }
+
+    @PutMapping("/{id}/add-exams")
+    public ResponseEntity<?> addExam(@PathVariable Long id, @RequestBody List<Exam> exams) {
+        return courseService.addExams(id, exams)
+                .map(course -> ResponseEntity.ok(course))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/{id}/remove-exam")
+    public ResponseEntity<?> removeExam(@PathVariable Long id, @RequestBody Exam exam) {
+        return courseService.removeExam(id, exam)
+                .map(course -> ResponseEntity.ok(course))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    protected ResponseEntity<?> validate(BindingResult result) {
+        Map<String, Object> errors = new HashMap<>();
+
+        result.getFieldErrors().forEach(err -> {
+            errors.put(err.getField(), err.getField() + " " + err.getDefaultMessage());
+        });
+        return ResponseEntity.badRequest().body(errors);
     }
 
 }
