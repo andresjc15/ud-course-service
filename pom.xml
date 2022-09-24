@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.ajcp.ud.service.course</groupId>
-	<artifactId>ud-course-service</artifactId>
+	<artifactId>ud-courses-service</artifactId>
 	<version>1.0.0</version>
 	<name>ud-course-service</name>
 	<description>Spring Boot project</description>
@@ -18,11 +18,6 @@
 		<spring-cloud.version>2021.0.3</spring-cloud.version>
 	</properties>
 	<dependencies>
-		<dependency>
-			<groupId>com.ajcp.ud.exam</groupId>
-			<artifactId>ud-exam-service</artifactId>
-			<version>1.0.0</version>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
