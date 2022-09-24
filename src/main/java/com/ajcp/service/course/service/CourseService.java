@@ -3,6 +3,8 @@ package com.ajcp.service.course.service;
 import com.ajcp.service.course.entity.Course;
 import com.ajcp.service.course.entity.Exam;
 import com.ajcp.service.course.entity.Student;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,6 +12,8 @@ import java.util.Optional;
 public interface CourseService {
 
     public List<Course> findAll();
+
+    public Page<Course> findAll(Pageable pageable);
 
     public Optional<Course> findById(Long id);
 

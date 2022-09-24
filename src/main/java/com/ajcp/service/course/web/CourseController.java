@@ -5,6 +5,7 @@ import com.ajcp.service.course.entity.Exam;
 import com.ajcp.service.course.entity.Student;
 import com.ajcp.service.course.service.CourseService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -26,6 +27,11 @@ public class CourseController {
     @GetMapping
     public ResponseEntity<?> getCourses() {
         return ResponseEntity.ok(courseService.findAll());
+    }
+
+    @GetMapping("/page")
+    public ResponseEntity<?> getCourses(Pageable pageable) {
+        return ResponseEntity.ok(courseService.findAll(pageable));
     }
 
     @GetMapping("/{id}")

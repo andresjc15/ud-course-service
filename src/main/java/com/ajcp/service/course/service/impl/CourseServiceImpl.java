@@ -6,6 +6,8 @@ import com.ajcp.service.course.entity.Student;
 import com.ajcp.service.course.repository.CourseRepository;
 import com.ajcp.service.course.service.CourseService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +25,12 @@ public class CourseServiceImpl implements CourseService {
     @Transactional(readOnly = true)
     public List<Course> findAll() {
         return courseRepository.findAll();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Course> findAll(Pageable pageable) {
+        return courseRepository.findAll(pageable);
     }
 
     @Override
